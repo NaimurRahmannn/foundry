@@ -18,7 +18,9 @@
 
       "agent": "product_manager",
 
-      "markdown": true
+      "markdown": false,
+      "output_file": "output/product_requirements.json"
+
     },
 
     {
