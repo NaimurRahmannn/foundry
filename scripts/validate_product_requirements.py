@@ -4,11 +4,18 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+
 from schemas.product_requirements import ProductRequirements
 
 
 def main() -> int:
-    path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("output/product_requirements.json")
+    path = (
+        Path(sys.argv[1])
+        if len(sys.argv) > 1
+        else ROOT_DIR / "ai_product_company" / "output" / "product_requirements.json"
+    )
 
     if not path.exists():
         print(f"❌ File not found: {path}")

@@ -1,10 +1,10 @@
 from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
-Priority=Literal[
+Priority = Literal[
     "must_have",
     "should_have",
-    "could_have".
+    "could_have",
     "wont_have_current_release",
 ]
 
@@ -48,6 +48,7 @@ class FeatureRequirement(BaseModel):
 
         return self
 
+
 class Assumption(BaseModel):
     statement: str
     basis: Literal[
@@ -56,6 +57,15 @@ class Assumption(BaseModel):
         "missing_client_input",
     ]
     requires_validation: bool
+
+
+class Recommendation(BaseModel):
+    title: str
+    description: str
+    requires_client_approval: Literal[True]
+    reason: str
+
+
 class SuccessCriterion(BaseModel):
     metric_name: str
     target_value: str | None
@@ -79,7 +89,8 @@ class SuccessCriterion(BaseModel):
             )
 
         return self
-        
+
+
 class ProductRisk(BaseModel):
     title: str
     description: str
