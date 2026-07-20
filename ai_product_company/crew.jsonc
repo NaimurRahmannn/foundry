@@ -1,44 +1,110 @@
 {
-  "name":"ai_product_company",
-  "agents":[
+  "name": "ai_product_company",
+
+  "agents": [
     "product_manager",
     "system_architect",
-    "technical_writer"
+    "technical_writer",
+    "quality_reviewer"
   ],
-  "tasks":[
+
+  "tasks": [
     {
       "name": "product_requirements_task",
-      "description": "Analyze the following software product idea.\n\nProduct name: {product_name}\n\nProduct description: {product_description}\n\nTarget users: {target_users}\n\nRequested features: {requested_features}\n\nCreate a clear product requirements document. Include: product summary, problem statement, product goals, target users, user needs, core features, optional features, out-of-scope items, assumptions, constraints, and measurable success criteria. Do not design the technical architecture.",
-      "expected_output": "A structured Markdown product requirements document containing a product summary, problem statement, product goals, target users, user needs, core features, optional features, scope boundaries, assumptions, constraints, and measurable success criteria.",
+
+      "description": "Analyze the following software product idea.\n\nProduct name: {product_name}\n\nProduct description: {product_description}\n\nTarget users: {target_users}\n\nRequested features: {requested_features}\n\nProduct budget: {budget}\n\nProject deadline: {deadline}\n\nTechnical or business constraints: {constraints}\n\nCreate a clear and realistic product requirements document.\n\nThe document must include:\n\n1. Product summary\n2. Problem statement\n3. Product goals\n4. Target users\n5. User needs\n6. Confirmed client requirements\n7. MoSCoW feature priorities\n8. Out-of-scope items\n9. Assumptions\n10. Recommendations requiring client approval\n11. Business and technical constraints\n12. Proposed measurable success criteria\n13. Product risks\n\nMoSCoW categories:\n\n- Must Have\n- Should Have\n- Could Have\n- Won't Have in the current release\n\nImportant rules:\n\n- Do not design the technical architecture.\n- Do not silently add new requirements.\n- Do not present recommendations as confirmed requirements.\n- Do not invent approved success targets.\n- Label invented success targets as proposed targets requiring client approval.\n- If a client-requested feature is placed below Must Have, explain why and state that postponement requires client approval.\n- Place suggested features under Recommendations Requiring Client Approval.\n- Respect the budget, deadline, team size, and constraints.\n- Keep the MVP scope realistic.\n- Separate confirmed requirements, assumptions, and recommendations.",
+
+      "expected_output": "A structured Markdown product requirements document containing the product summary, problem statement, goals, users, user needs, confirmed client requirements, MoSCoW priorities, out-of-scope items, assumptions, recommendations requiring approval, constraints, proposed measurable success criteria, and product risks. Any client-requested feature placed below Must Have must include a reason and approval requirement.",
+
       "agent": "product_manager",
+
       "markdown": true
     },
+
     {
       "name": "architecture_task",
-      "description": "Using the Product Manager's requirements, create a suitable technical architecture for {product_name}. Include: architecture style, recommended technology stack, frontend responsibilities, backend responsibilities, database choice, main system components, component communication, authentication, authorization, deployment overview, important technical risks, and reasons for the major technology decisions. Keep the architecture appropriate for the product's size. Do not introduce microservices, Kubernetes, or other complex technologies unless the requirements clearly justify them.",
-      "expected_output": "A structured Markdown technical architecture document explaining the architecture style, technology stack, frontend, backend, database, components, communication, security, deployment, risks, and reasons for major technology choices.",
+
+      "description": "Using the Product Manager's requirements, create a practical technical architecture for {product_name}.\n\nProject budget: {budget}\n\nProject deadline: {deadline}\n\nProject constraints: {constraints}\n\nThe architecture document must include:\n\n1. Architecture goals\n2. Recommended architecture style\n3. Reasons for the architecture choice\n4. Recommended technology stack\n5. Reasons for every major technology choice\n6. Frontend responsibilities\n7. Backend responsibilities\n8. Database choice and responsibilities\n9. Main technical components\n10. Communication between components\n11. Authentication approach\n12. Session-management approach\n13. Authorization and role-management approach\n14. Password-storage approach\n15. Data-validation approach\n16. Error-handling approach\n17. Logging and monitoring approach\n18. Database-backup approach\n19. MVP deployment plan\n20. Future scaling plan\n21. Technical risks\n22. Technical decisions requiring client approval\n\nImportant rules:\n\n- Main technical components must be actual software components or modules, not repeated product features.\n- Use specific components such as web client, REST API, authentication module, project module, task module, comment module, progress-calculation module, database, logging, and backup service when appropriate.\n- Choose one clear implementation language for every application layer.\n- Explain why each framework and database is appropriate.\n- Design the simplest architecture that satisfies the requirements.\n- Respect the budget, deadline, team size, and constraints.\n- Separate the MVP deployment plan from future scaling.\n- Do not add a load balancer, auto-scaling, Kubernetes, microservices, message brokers, or distributed infrastructure to the MVP unless clearly required.\n- Do not suggest microservices as an automatic future step.\n- Recommend gradual scaling based on measured problems.\n- Do not include source code, SQL, commands, scripts, credentials, or hardcoded secrets.\n- Describe secure session storage clearly.\n- Browser sessions should use secure cookie protections when session-based authentication is selected.\n- Passwords must only be stored as secure password hashes.\n- Product risks and technical risks must not be mixed.\n- Do not change confirmed client requirements.",
+
+      "expected_output": "A structured Markdown architecture document containing justified architecture and technology decisions, actual technical components, security design, validation, logging, backups, realistic MVP deployment, gradual future scaling, technical risks, and decisions requiring client approval. It must not contain source code, shell commands, SQL, credentials, or unnecessary infrastructure.",
+
       "agent": "system_architect",
+
       "context": [
         "product_requirements_task"
       ],
+
       "markdown": true
     },
+
     {
-      "name": "final_product_plan_task",
-      "description": "Create the final product plan for {product_name} using the Product Manager's requirements and the System Architect's architecture. Include: executive summary, product problem, product goals, target users, core features, optional features, scope boundaries, architecture overview, technology stack, main components, security overview, deployment overview, product risks, technical risks, suggested development phases, and final recommendations. Remove repeated information and maintain consistency. Do not invent important requirements that were not provided by the client or earlier agents.",
-      "expected_output": "A complete professional software product plan written in Markdown. It should combine the product requirements and technical architecture into one consistent document that developers, product managers, and stakeholders can understand.",
+      "name": "draft_product_plan_task",
+
+      "description": "Create the first complete draft product plan for {product_name} using the Product Manager's requirements and the System Architect's architecture.\n\nThe draft must include:\n\n1. Executive summary\n2. Product problem\n3. Product goals\n4. Target users\n5. Confirmed client requirements\n6. MoSCoW feature priorities\n7. Out-of-scope items\n8. Assumptions\n9. Recommendations requiring client approval\n10. Proposed product success criteria\n11. Product risks\n12. Risk mitigation strategies\n13. Architecture overview\n14. Technology stack and decision reasons\n15. Main technical components\n16. Authentication and session-management overview\n17. Authorization and role-management overview\n18. Data and password security overview\n19. Validation and error-handling overview\n20. Logging, monitoring, and backup overview\n21. MVP deployment plan\n22. Future scaling considerations\n23. Technical risks\n24. Product-specific development roadmap\n25. Open questions for the client\n26. Final recommendations\n\nThe development roadmap must use vertical product phases. Each phase should implement a usable part of the product across the frontend, backend, and database where necessary.\n\nA suitable dependency order is generally:\n\n- Foundation and database design\n- Authentication, users, and roles\n- Projects and project membership\n- Tasks, assignments, deadlines, and statuses\n- Comments and activity history\n- Progress dashboard\n- Testing, security review, and deployment\n\nAdapt this order to the actual product requirements.\n\nImportant rules:\n\n- Clearly separate confirmed requirements, assumptions, and recommendations.\n- Do not invent approved numeric success targets.\n- Label proposed metrics as requiring client confirmation.\n- If a confirmed feature is postponed, explain why and request approval.\n- Product risks must concern scope, market, adoption, users, value, or delivery.\n- Technical risks must concern architecture, security, data, performance, testing, or deployment.\n- Technical components must not be simple repetitions of product features.\n- Do not recommend an MVP load balancer for a single application instance.\n- Do not recommend hiring or outsourcing unless it fits the stated budget.\n- Do not recommend an out-of-scope item as part of the current MVP.\n- Do not include source code, SQL, shell commands, cloud commands, scripts, passwords, API keys, or example credentials.\n- Do not use generic roadmap phases that separate all frontend work from all backend work.\n- Ensure roadmap dependencies are logically ordered.\n- Keep the plan realistic for the budget, deadline, team size, and constraints.",
+
+      "expected_output": "A complete draft Markdown product plan that combines the requirements and architecture. It must clearly separate confirmed requirements, assumptions, and recommendations; contain justified technical decisions; use distinct product and technical risks; include a vertical product-specific roadmap; avoid contradictions; and contain no source code or commands.",
+
       "agent": "technical_writer",
+
       "context": [
         "product_requirements_task",
         "architecture_task"
       ],
+
       "markdown": true,
+
+      "output_file": "output/draft_product_plan.md"
+    },
+
+    {
+      "name": "quality_review_task",
+
+      "description": "Review the complete draft product plan for {product_name} against the original product requirements, technical architecture, budget, deadline, team size, and constraints.\n\nProject budget: {budget}\n\nProject deadline: {deadline}\n\nProject constraints: {constraints}\n\nDecision priority rules:\n\n1. Explicit client constraints have the highest priority.\n2. Confirmed client requirements have the second-highest priority.\n3. Existing architecture decisions are valid when they satisfy the requirements and constraints.\n4. Reviewer preferences have the lowest priority.\n\nNever recommend a change that violates an explicit client constraint.\n\nDo not recommend microservices, Kubernetes, load balancers, auto-scaling, message brokers, or distributed architecture when the client has explicitly requested a simple monolith.\n\nScalability concerns alone are not enough to reject a monolithic architecture for an MVP. Evaluate architecture according to the expected MVP usage, team size, budget, deadline, and confirmed scope.\n\nIf the long-term user scale is unknown, add it as an open question. Do not redesign the MVP around an unsupported large-scale assumption.\n\nReview the draft using the following checklist:\n\n1. All confirmed client requirements remain present.\n2. A client-requested feature is not postponed without a reason and client approval.\n3. Assumptions are not presented as confirmed facts.\n4. Recommendations are not presented as approved requirements.\n5. Numeric success targets are either client-provided or clearly labelled as proposed.\n6. Recommendations do not contradict out-of-scope items.\n7. Product risks and technical risks are different and correctly categorized.\n8. Technical components are actual modules or infrastructure components, not repeated feature names.\n9. Every major technology choice includes a clear reason.\n10. The technology stack is internally consistent.\n11. The architecture matches the budget, deadline, team size, and constraints.\n12. The MVP deployment does not contain unnecessary load balancers, auto-scaling, Kubernetes, microservices, distributed infrastructure, or message brokers.\n13. Session handling, authorization, password hashing, validation, secrets, backups, and monitoring are explained safely and clearly.\n14. The future scaling plan is gradual and based on measured needs.\n15. The roadmap uses realistic dependencies.\n16. A roadmap phase does not depend on work scheduled in a later phase.\n17. The roadmap implements vertical product features instead of separating all frontend and backend development.\n18. Final recommendations do not conflict with the budget or deadline.\n19. No section contradicts another section.\n20. No source code, SQL, shell commands, credentials, or hardcoded secrets are present.\n\nBefore adding a Required Correction, classify it as one of:\n\n- Constraint violation\n- Confirmed-requirement violation\n- Internal contradiction\n- Security defect\n- Missing client information\n- Optional improvement\n\nOnly the first four categories may require an automatic correction.\n\nMissing client information must become an Open Question.\n\nOptional improvements must not override current architecture or scope.\n\nAssign every required correction a unique issue ID using these prefixes:\n\n- REQ: requirements issue\n- ARCH: architecture issue\n- SEC: security issue\n- RISK: risk issue\n- ROAD: roadmap issue\n- DATA: unsupported or invented information\n- CONS: client-constraint violation\n\nExamples:\nSEC-001\nARCH-001\nDATA-001\n\nEvery item under Required Corrections must include its issue ID. Do not reuse issue IDs.\n\nThe review result must use this structure:\n\n# Quality Review\n\n## Review Status\nAPPROVED or REVISION REQUIRED\n\n## Quality Score\nA score from 0 to 100\n\n## Strengths\n\n## Contradictions Found\n\n## Unsupported Assumptions or Targets\n\n## Missing Information\n\n## Incorrect Risk Categorization\n\n## Architecture Problems\n\n## Security Problems\n\n## Roadmap Problems\n\n## Required Corrections\n\n## Optional Improvements\n\nFor every issue:\n\n- Issue ID, when it is a required correction.\n- Name the affected draft section.\n- Quote or summarize the problematic decision.\n- Explain why it is a problem.\n- Give a precise correction.\n\nMark the draft REVISION REQUIRED if any significant contradiction, security ambiguity, unsupported target, roadmap dependency problem, or constraint violation exists.\n\nDo not rewrite the complete product plan. Produce review instructions for the Technical Writer.",
+
+      "expected_output": "A strict Markdown quality review containing status, score, strengths, contradictions, unsupported assumptions, missing information, risk categorization problems, architecture problems, security problems, roadmap problems, required corrections, and optional improvements. Every required correction must have a unique stable issue ID using the approved prefix list, identify its section, and provide a precise correction.",
+
+      "agent": "quality_reviewer",
+
+      "context": [
+        "product_requirements_task",
+        "architecture_task",
+        "draft_product_plan_task"
+      ],
+
+      "markdown": true,
+
+      "output_file": "output/quality_review.md"
+    },
+
+    {
+      "name": "final_product_plan_task",
+
+      "description": "Create the final revised product plan for {product_name}.\n\nUse all of the following:\n\n- Original Product Manager requirements\n- Original System Architect decisions\n- Draft product plan\n- Quality Review\n\nApply every required correction from the Quality Review before producing the final document.\n\nThe Quality Review is advisory, not higher authority than the client.\n\nDo not apply any reviewer correction that conflicts with an explicit client requirement, budget, deadline, team-size constraint, or architecture constraint.\n\nWhen a reviewer recommendation conflicts with client constraints:\n\n1. Keep the client-compliant decision.\n2. Explain why the reviewer recommendation was rejected.\n3. Add unresolved scale or scope questions under Open Questions.\n\nNever replace a required monolithic architecture with microservices unless the client explicitly changes that constraint.\n\nThe final product plan must include:\n\n1. Executive summary\n2. Product problem\n3. Product goals\n4. Target users\n5. Confirmed client requirements\n6. MoSCoW feature priorities with explanations\n7. Out-of-scope items\n8. Assumptions\n9. Recommendations requiring client approval\n10. Proposed product success criteria\n11. Product risks\n12. Product-risk mitigation\n13. Architecture overview\n14. Technology stack and decision reasons\n15. Main technical components\n16. Authentication and session management\n17. Authorization and roles\n18. Data, password, and secret security\n19. Validation and error handling\n20. Logging, monitoring, health checks, and backups\n21. MVP deployment plan\n22. Gradual future scaling plan\n23. Technical risks\n24. Technical-risk mitigation\n25. Product-specific development roadmap\n26. Open questions for the client\n27. Final recommendations\n28. Review decisions and correction evidence\n\nThe Review Decisions section must contain one entry for every required reviewer correction.\n\nEach entry must use this exact structure:\n\n### ISSUE-ID\n\n- Reviewer correction:\n- Resolution:\n- Evidence in final document:\n- Final decision:\n- Reason:\n\nRules:\n\n- Use Applied only when the final document contains the complete correction.\n- Use Partially Applied when only part of the correction is present.\n- Use Rejected when it conflicts with an explicit client constraint.\n- Evidence must name the exact final-document heading and summarize the visible correction.\n- Do not claim evidence that is absent from the final document.\n\nImportant revision rules:\n\nCorrection verification rules:\n\n- Never claim that a reviewer correction was applied unless the correction is visibly present in the final document.\n- Do not invent evidence, expected user counts, concurrent-user counts, traffic levels, growth targets, budgets, deadlines, success metrics, compliance requirements, or client decisions.\n- When required information is missing, add a clearly worded item under Open Questions. Do not fill the missing field with an invented value.\n- A modular monolith does not conflict with a monolithic architecture. Prefer clearly separated internal modules while retaining one deployable application.\n- Basic security requirements must never be rejected only because of budget constraints. Password hashing, HTTPS, secure cookies, authorization checks, input validation, secret management, dependency updates, and backups are baseline requirements.\n- Choose exactly one authentication and session-management strategy.\n- Do not combine JWT authentication and server-side session authentication unless the architecture explicitly explains why both are required and how they work together.\n- When the client has not requested third-party identity providers, prefer a simple server-side session strategy for the MVP.\n\n- Read the Quality Review before writing the final plan.\n- Apply every item under Required Corrections unless it conflicts with a higher-priority client requirement or constraint.\n- Do not blindly copy the draft.\n- Remove contradictions identified by the reviewer when doing so does not violate client constraints.\n- When earlier outputs conflict, follow the original client requirements and constraints.\n- If information is missing, add it to Open Questions instead of inventing it.\n- Do not turn proposed numeric targets into approved targets.\n- Label all proposed metrics as requiring client confirmation.\n- If a client-requested feature is assigned Should Have or Could Have, explain why and state that postponement requires client approval.\n- Do not recommend out-of-scope features for the current release.\n- Keep product risks separate from technical risks.\n- Use actual technical modules in the technical-components section.\n- Keep the MVP deployment simple and suitable for the stated constraints.\n- Do not include an unnecessary load balancer for one application server.\n- Do not present microservices as the default scaling path.\n- Ensure every roadmap dependency refers only to work completed in an earlier phase or the current phase.\n- Use vertical feature phases that include the required frontend, backend, and data work.\n- Do not recommend hiring, outsourcing, or infrastructure that exceeds the stated budget without explicitly requiring client approval.\n- Do not include source code, SQL, shell commands, cloud commands, credentials, API keys, or hardcoded secrets.\n- Remove unnecessary repetition.\n- Use clear Markdown headings and professional language.",
+
+      "expected_output": "A final revised professional Markdown product plan that applies valid required review corrections and rejects reviewer suggestions that conflict with client constraints. It must include a Review Decisions section with one evidence-backed entry for every required reviewer correction, using each reviewer issue ID and the required Resolution, Evidence, Final decision, and Reason fields. It must remain consistent with the original client inputs, avoid invented missing information, be realistic for the budget and deadline, be free from contradictions, be clear about assumptions and approvals, be secure in its recommendations, and be organized around a logical vertical development roadmap.",
+
+      "agent": "technical_writer",
+
+      "context": [
+        "product_requirements_task",
+        "architecture_task",
+        "draft_product_plan_task",
+        "quality_review_task"
+      ],
+
+      "markdown": true,
+
       "output_file": "output/product_plan.md"
     }
   ],
-  "process":"sequential",
-  "verbose":true,
-  "memory":false,
-  "planning":false,
-  "inputs":{}
+
+  "process": "sequential",
+
+  "verbose": true,
+
+  "memory": false,
+
+  "planning": false,
+
+  "inputs": {}
 }
