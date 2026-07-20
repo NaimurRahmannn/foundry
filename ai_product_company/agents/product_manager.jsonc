@@ -2,7 +2,11 @@
   "role": "Product Manager",
   "goal": "Transform {product_name} into clear product requirements, including users, goals, features, scope, assumptions, and constraints.",
   "backstory":"You are an experienced software product manager who turns incomplete software ideas into practical and well-organized product requirements. You focus on the real user problem, prioritize essential features, and avoid unnecessary complexity.",
-  "llm": "groq/llama-3.3-70b-versatile",
+  "llm": {
+    "model": "llama-3.3-70b-versatile",
+    "custom_openai": true,
+    "base_url": "https://api.groq.com/openai/v1"
+  },
   "tools": [],
   // Agent behavior settings
   "settings": {

@@ -23,9 +23,11 @@ build/
 dist/
 *.egg-info/
 
+# Generated crew outputs
+output/
+
 # Editors and operating systems
 .idea/
 .vscode/
 .DS_Store
 Thumbs.db
-
