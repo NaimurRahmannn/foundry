@@ -14,7 +14,9 @@ class GroqLLM(LLM):
     def supports_function_calling(self) -> bool:
         return False
 
-    def _prepare_completion_params(self, messages, tools=None, skip_file_processing=False):
+    def _prepare_completion_params(
+        self, messages, tools=None, skip_file_processing=False
+    ):
         params = super()._prepare_completion_params(
             messages,
             tools=tools,
@@ -57,9 +59,9 @@ class AiProductCompany:
     def technical_writer_llm(self) -> LLM:
         return self._groq_openai_compatible_llm()
 
-    #@llm
-    #def quality_reviewer_llm(self) -> LLM:
-        #return self._groq_openai_compatible_llm()
+    # @llm
+    # def quality_reviewer_llm(self) -> LLM:
+    # return self._groq_openai_compatible_llm()
 
     @tool
     def pypi_lookup_tool(self) -> PyPIPackageLookupTool:
@@ -89,25 +91,28 @@ class AiProductCompany:
             executor_class=CrewAgentExecutor,
         )
 
-    #@agent
-    #def quality_reviewer(self) -> Agent:
-        #return Agent(config=self.agents_config["quality_reviewer"])
+    # @agent
+    # def quality_reviewer(self) -> Agent:
+    # return Agent(config=self.agents_config["quality_reviewer"])
 
     @task
     def product_requirements_task(self) -> Task:
-        return Task(config=self.tasks_config["product_requirements_task"])
+        return Task(
+            config=self.tasks_config["product_requirements_task"],
+            output_pydantic=ProductRequirements,
+        )
 
     @task
     def architecture_task(self) -> Task:
         return Task(config=self.tasks_config["architecture_task"])
 
-    #@task
-    #def draft_product_plan_task(self) -> Task:
-        #return Task(config=self.tasks_config["draft_product_plan_task"])
+    # @task
+    # def draft_product_plan_task(self) -> Task:
+    # return Task(config=self.tasks_config["draft_product_plan_task"])
 
-    #@task
-    #def quality_review_task(self) -> Task:
-        #return Task(config=self.tasks_config["quality_review_task"])
+    # @task
+    # def quality_review_task(self) -> Task:
+    # return Task(config=self.tasks_config["quality_review_task"])
 
     @task
     def final_product_plan_task(self) -> Task:
@@ -121,6 +126,6 @@ class AiProductCompany:
             process=Process.sequential,
             verbose=True,
             memory=False,
-           # embedder={"provider": "onnx", "config": {}},
+            # embedder={"provider": "onnx", "config": {}},
             planning=False,
         )

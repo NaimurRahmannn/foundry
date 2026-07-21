@@ -55,6 +55,7 @@ product_requirements_task:
     - Keep every item concise and specific.
   expected_output: A single valid JSON object only. No Markdown. No headings. No code fences. No comments. No invented missing information.
   agent: product_manager
+  human_input: true
   markdown: false
   output_file: output/product_requirements.json
   output_pydantic: product_requirements_output
