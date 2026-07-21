@@ -1,145 +1,44 @@
 product_requirements_task:
   description: |-
-    Analyze the following software product idea and return only valid JSON.
+    Analyze the software product idea and return only one valid JSON object.
 
     Product name: {product_name}
-
     Product description: {product_description}
-
     Target users: {target_users}
-
     Requested features: {requested_features}
-
     Product budget: {budget}
-
     Project deadline: {deadline}
-
     Technical or business constraints: {constraints}
 
-    Return a single valid JSON object.
+    Required top-level JSON fields: product_name, product_summary, problem_statement, product_goals, target_users, confirmed_client_requirements, features, out_of_scope_items, assumptions, recommendations_requiring_client_approval, business_and_technical_constraints, success_criteria, product_risks, open_questions.
 
-    Required top-level fields:
+    Use these object shapes:
+    - features: name, description, priority, source, is_confirmed_client_requirement, requires_client_approval, reason.
+    - assumptions: statement, basis, requires_validation.
+    - recommendations_requiring_client_approval: title, description, requires_client_approval, reason.
+    - success_criteria: metric_name, target_value, source, requires_client_approval.
+    - product_risks: title, description, likelihood, impact, mitigation.
+    - open_questions: question, reason, blocks_decision.
 
-    - product_name
-    - product_summary
-    - problem_statement
-    - product_goals
-    - target_users
-    - confirmed_client_requirements
-    - features
-    - out_of_scope_items
-    - assumptions
-    - recommendations_requiring_client_approval
-    - business_and_technical_constraints
-    - success_criteria
-    - product_risks
-    - open_questions
-
-    Top-level field shape rules:
-
-    - product_name must be a string.
-    - product_summary must be a string.
-    - problem_statement must be a string.
-    - product_goals must be an array of strings.
-    - target_users must be an array of strings.
-    - confirmed_client_requirements must be an array of strings, not objects.
-    - features must be an array of feature objects.
-    - out_of_scope_items must be an array of strings.
-    - business_and_technical_constraints must be an array of strings.
-    - business_and_technical_constraints must include the exact budget string from Product budget.
-    - business_and_technical_constraints must include the exact deadline string from Project deadline.
-    - success_criteria must be an array of success criterion objects.
-
-    Each feature object must include exactly these fields:
-
-    - name: string
-    - description: string
-    - priority: must_have | should_have | could_have | wont_have_current_release
-    - source: client_confirmed | agent_recommendation | assumption | missing_client_input
-    - is_confirmed_client_requirement: true or false
-    - requires_client_approval: true or false
-    - reason: string
-
-    Do not use null for reason.
-
-    Exact JSON shape rules:
-
-    - assumptions must be an array of objects.
-    - recommendations_requiring_client_approval must be an array of objects.
-    - product_risks must be an array of objects.
-    - open_questions must be an array of objects.
-    - Do not use plain strings for assumptions, risks, or open questions.
-    - Do not use null for feature reason.
-    - Every feature reason must be a string.
-    - Preserve the exact budget from the client input.
-    - Preserve the exact deadline from the client input.
-    - Preserve each requested feature as a separate confirmed requirement.
-    - Do not merge User registration and Login into one feature.
-
-    Each assumption object must use this shape:
-
-    statement: string
-    basis: client_provided | reasonable_inference | missing_client_input
-    requires_validation: true or false
-
-    Each recommendation object must use this shape:
-
-    title: string
-    description: string
-    requires_client_approval: true
-    reason: string
-
-    Each product risk object must use this shape:
-
-    title: string
-    description: string
-    likelihood: low | medium | high
-    impact: low | medium | high
-    mitigation: string
-
-    Each open question object must use this shape:
-
-    question: string
-    reason: string
-    blocks_decision: true or false
-
-    Success criterion objects must include:
-
-    - metric_name
-    - target_value
-    - source
-    - requires_client_approval
-
-    Allowed success criterion source values:
-
-    - client_provided
-    - proposed_by_agent
-    - missing_client_input
+    Allowed values:
+    - priority: must_have, should_have, could_have, wont_have_current_release.
+    - source: client_confirmed, agent_recommendation, assumption, missing_client_input.
+    - assumption basis: client_provided, reasonable_inference, missing_client_input.
+    - success criterion source: client_provided, proposed_by_agent, missing_client_input.
+    - likelihood and impact: low, medium, high.
 
     Important rules:
-
-    - Return only JSON.
-    - Do not return Markdown.
-    - Do not use headings.
-    - Do not use bullet points outside JSON arrays.
-    - Do not wrap the JSON in a code block.
-    - Do not include comments inside the JSON.
-    - The first character of your response must be an opening curly brace.
-    - The last character of your response must be a closing curly brace.
+    - Return JSON only; no Markdown, headings, comments, or code fences.
     - Do not design the technical architecture.
-    - Do not silently add new requirements.
-    - Do not present recommendations as confirmed requirements.
-    - Do not invent approved success targets.
+    - Preserve exact budget and deadline strings in business_and_technical_constraints.
+    - Preserve each requested feature as a separate confirmed requirement.
     - Every feature listed in Requested features is a confirmed client requirement.
-    - Every confirmed client requirement should use priority must_have unless the output explicitly marks requires_client_approval as true and explains the downgrade in reason.
-    - If success metrics are not provided by the client, set source to missing_client_input and target_value to null.
-    - If you propose a success metric, set source to proposed_by_agent and requires_client_approval to true.
-    - If a client-requested feature is placed below must_have, set requires_client_approval to true and explain why in reason.
+    - Confirmed features should be must_have unless a lower priority explicitly requires client approval and explains why.
+    - Do not present assumptions or recommendations as confirmed requirements.
+    - Do not invent approved success targets, user counts, traffic, compliance needs, integrations, budgets, or deadlines.
+    - If success metrics are missing, use source missing_client_input and target_value null.
     - Missing information must become an open question.
-    - Do not invent expected user counts, traffic levels, compliance requirements, integrations, budgets, deadlines, or success targets.
-    - Respect the budget, deadline, team size, and constraints.
     - Keep the MVP scope realistic.
-    - Separate confirmed requirements, assumptions, recommendations, risks, and open questions.
   expected_output: A single valid JSON object only. No Markdown. No headings. No code fences. No comments. No invented missing information.
   agent: product_manager
   markdown: false
@@ -154,6 +53,9 @@ architecture_task:
     Project deadline: {deadline}
 
     Project constraints: {constraints}
+
+    Before writing the architecture, use the pypi_package_lookup tool for each Python package you plan to recommend. Use the lookup result to confirm the package exists and to check its current version instead of relying on memory.
+    Do not include tool-call markup, function-call examples, or raw tool output in the final architecture document.
 
     The architecture document must include:
 
@@ -193,6 +95,7 @@ architecture_task:
     - Do not suggest microservices as an automatic future step.
     - Recommend gradual scaling based on measured problems.
     - Do not include source code, SQL, commands, scripts, credentials, or hardcoded secrets.
+    - Do not recommend third-party authentication providers, monitoring tools, or infrastructure unless they are required by the client or clearly fit the MVP budget and constraints.
     - Describe secure session storage clearly.
     - Browser sessions should use secure cookie protections when session-based authentication is selected.
     - Passwords must only be stored as secure password hashes.

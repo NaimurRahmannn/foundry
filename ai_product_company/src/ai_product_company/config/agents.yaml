@@ -11,7 +11,7 @@ system_architect:
   goal: Design a simple, practical, secure, and maintainable technical architecture based on the approved product requirements.
   backstory: You are a senior software architect who designs maintainable systems. You select technologies according to actual product requirements and avoid unnecessary technologies such as microservices or Kubernetes when a simpler architecture is sufficient.
   llm: system_architect_llm
-  tools: []
+  tools: [pypi_lookup_tool]
   verbose: true
   allow_delegation: false
 technical_writer:
