@@ -3,7 +3,7 @@
 ## Project Goal
 
 Build a complete multi-agent AI product development system using CrewAI
-to practice agent orchestration before learning RAG, LangChain, and
+to practice agent orchestration.
 LangGraph.
 
 ## Current Architecture
