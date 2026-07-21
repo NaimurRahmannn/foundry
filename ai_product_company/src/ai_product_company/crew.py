@@ -36,9 +36,9 @@ class AiProductCompany:
     def technical_writer_llm(self) -> LLM:
         return self._groq_openai_compatible_llm()
 
-    @llm
-    def quality_reviewer_llm(self) -> LLM:
-        return self._groq_openai_compatible_llm()
+    #@llm
+    #def quality_reviewer_llm(self) -> LLM:
+        #return self._groq_openai_compatible_llm()
 
     @agent
     def product_manager(self) -> Agent:
@@ -52,9 +52,9 @@ class AiProductCompany:
     def technical_writer(self) -> Agent:
         return Agent(config=self.agents_config["technical_writer"])
 
-    @agent
-    def quality_reviewer(self) -> Agent:
-        return Agent(config=self.agents_config["quality_reviewer"])
+    #@agent
+    #def quality_reviewer(self) -> Agent:
+        #return Agent(config=self.agents_config["quality_reviewer"])
 
     @task
     def product_requirements_task(self) -> Task:
@@ -64,13 +64,13 @@ class AiProductCompany:
     def architecture_task(self) -> Task:
         return Task(config=self.tasks_config["architecture_task"])
 
-    @task
-    def draft_product_plan_task(self) -> Task:
-        return Task(config=self.tasks_config["draft_product_plan_task"])
+    #@task
+    #def draft_product_plan_task(self) -> Task:
+        #return Task(config=self.tasks_config["draft_product_plan_task"])
 
-    @task
-    def quality_review_task(self) -> Task:
-        return Task(config=self.tasks_config["quality_review_task"])
+    #@task
+    #def quality_review_task(self) -> Task:
+        #return Task(config=self.tasks_config["quality_review_task"])
 
     @task
     def final_product_plan_task(self) -> Task:
@@ -83,6 +83,7 @@ class AiProductCompany:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            memory=False,
+            memory=True,
+            embedder={"provider":"onnx","config":{}},
             planning=False,
         )

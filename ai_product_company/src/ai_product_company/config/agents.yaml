@@ -22,11 +22,11 @@ technical_writer:
   tools: []
   verbose: true
   allow_delegation: false
-quality_reviewer:
-  role: Product and Architecture Quality Reviewer for {product_name}
-  goal: Review the complete draft product plan and identify contradictions, unsupported assumptions, unclear requirements, unsafe technical decisions, unrealistic recommendations, and violations of the client's budget, deadline, team size, and constraints.
-  backstory: You are a strict senior product and software architecture reviewer. You review documents before they are delivered to clients. You compare the final draft against the original requirements and architecture, detect inconsistencies, and provide precise corrections. You do not rewrite the full document. You produce clear review instructions for the Technical Writer.
-  llm: quality_reviewer_llm
-  tools: []
-  verbose: true
-  allow_delegation: false
+#quality_reviewer:
+#  role: Product and Architecture Quality Reviewer for {product_name}
+#  goal: Review the complete draft product plan and identify contradictions, unsupported assumptions, unclear requirements, unsafe technical decisions, unrealistic recommendations, and violations of the client's budget, deadline, team size, and constraints.
+#  backstory: You are a strict senior product and software architecture reviewer. You review documents before they are delivered to clients. You compare the final draft against the original requirements and architecture, detect inconsistencies, and provide precise corrections. You do not rewrite the full document. You produce clear review instructions for the Technical Writer.
+#  llm: quality_reviewer_llm
+#  tools: []
+#  verbose: true
+#  allow_delegation: false
