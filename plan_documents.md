@@ -4,7 +4,6 @@
 
 Build a complete multi-agent AI product development system using CrewAI
 to practice agent orchestration.
-LangGraph.
 
 ## Current Architecture
 
@@ -43,11 +42,6 @@ Structured outputs - Human feedback
 ## Phase 2: Expand Agent Team
 
 Add:
-
-### UX Designer Agent
-
-Creates: - User flows - Wireframe descriptions - User experience
-suggestions
 
 ### Backend Engineer Agent
 
