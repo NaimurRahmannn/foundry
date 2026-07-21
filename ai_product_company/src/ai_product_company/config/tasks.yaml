@@ -39,6 +39,20 @@ product_requirements_task:
     - If success metrics are missing, use source missing_client_input and target_value null.
     - Missing information must become an open question.
     - Keep the MVP scope realistic.
+
+    Output constraints:
+    - Keep product_summary under 100 words.
+    - Keep problem_statement under 100 words.
+    - Use at most 5 product_goals.
+    - Keep each goal under 25 words.
+    - Use at most 10 features.
+    - Keep each feature description under 40 words.
+    - Use at most 5 assumptions.
+    - Use at most 5 recommendations requiring client approval.
+    - Use at most 5 success criteria.
+    - Use at most 5 product risks.
+    - Use at most 8 open questions.
+    - Keep every item concise and specific.
   expected_output: A single valid JSON object only. No Markdown. No headings. No code fences. No comments. No invented missing information.
   agent: product_manager
   markdown: false
@@ -101,6 +115,16 @@ architecture_task:
     - Passwords must only be stored as secure password hashes.
     - Product risks and technical risks must not be mixed.
     - Do not change confirmed client requirements.
+
+    Output constraints:
+    - Keep the complete architecture document under 2500 words.
+    - Keep each section concise and focused on MVP needs.
+    - Use short paragraphs and bullet points where appropriate.
+    - Do not repeat product requirements unless necessary to justify an architecture decision.
+    - Do not repeat the same technology decision in multiple sections.
+    - Keep the future scaling plan under 200 words.
+    - Keep technical risks under 5 items.
+    - Keep client approval decisions under 5 items.
   expected_output: A structured Markdown architecture document containing justified architecture and technology decisions, actual technical components, security design, validation, logging, backups, realistic MVP deployment, gradual future scaling, technical risks, and decisions requiring client approval. It must not contain source code, shell commands, SQL, credentials, or unnecessary infrastructure.
   agent: system_architect
   markdown: true

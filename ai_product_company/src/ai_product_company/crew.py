@@ -120,7 +120,7 @@ class AiProductCompany:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            memory=True,
-            embedder={"provider": "onnx", "config": {}},
+            memory=False,
+           # embedder={"provider": "onnx", "config": {}},
             planning=False,
         )
